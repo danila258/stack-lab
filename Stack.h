@@ -2,8 +2,6 @@
 #define STACK_LAB_STACK_H
 
 #include <iostream>
-#include <list>
-#include <vector>
 
 using ValueType = double;
 
@@ -18,7 +16,6 @@ class IStackImplementation;
 class Stack {
 public:
     Stack(StackContainer container = StackContainer::Vector);
-
     Stack(const ValueType* valueArray, size_t arraySize,
           StackContainer container = StackContainer::Vector);
 
@@ -32,6 +29,7 @@ public:
 
     void push(const ValueType& value);
     void pop();
+
     const ValueType& top() const;
     bool isEmpty() const;
     size_t size() const;

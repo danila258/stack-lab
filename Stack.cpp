@@ -1,18 +1,21 @@
+#include <stdexcept>
+
 #include "Stack.h"
 #include "StackImplementation.h"
+#include "VectorStack.h"
+#include "ListStack.h"
 
-#include <stdexcept>
 
 Stack::Stack(StackContainer container) : _containerType(container) {
     switch (container) {
 
         case StackContainer::List: {
-            _pimpl = static_cast<IStackImplementation*>(new List());
+            _pimpl = static_cast<IStackImplementation*>(new ListStack());
             break;
         }
 
         case StackContainer::Vector: {
-            _pimpl = static_cast<IStackImplementation*>(new Vector());
+            _pimpl = static_cast<IStackImplementation*>(new VectorStack());
             break;
         }
 
@@ -21,36 +24,28 @@ Stack::Stack(StackContainer container) : _containerType(container) {
     }
 }
 
-Stack::Stack(const ValueType* valueArray, const size_t arraySize, StackContainer container) : _containerType(container) {
-    switch (container) {
-
-        case StackContainer::List: {
-            _pimpl = static_cast<IStackImplementation*>(new List());
-
-            for (int i = 0; i < arraySize; ++i) {
-                _pimpl->push(valueArray[i]);
-            }
-
-            break;
-        }
-
-        case StackContainer::Vector: {
-            _pimpl = static_cast<IStackImplementation*>(new Vector());
-
-            for (int i = 0; i < arraySize; ++i) {
-                _pimpl->push(valueArray[i]);
-            }
-
-            break;
-        }
-
-        default:
-            throw std::runtime_error("Неизвестный тип контейнера");
+Stack::Stack(const ValueType* valueArray, const size_t arraySize, StackContainer container) : Stack(container) {
+    for (size_t i = 0; i < arraySize; ++i) {
+        _pimpl->push(valueArray[i]);
     }
 }
 
 Stack::Stack(const Stack& copyStack): _containerType(copyStack._containerType) {
-    *(this->_pimpl) = *(copyStack._pimpl);
+    switch (_containerType) {
+
+        case StackContainer::List: {
+            _pimpl = static_cast<IStackImplementation *>(new ListStack(*dynamic_cast<ListStack*>(copyStack._pimpl)));
+            break;
+        }
+
+        case StackContainer::Vector: {
+            _pimpl = static_cast<IStackImplementation *>(new VectorStack(*dynamic_cast<VectorStack*>(copyStack._pimpl)));
+            break;
+        }
+
+        default:
+            throw std::runtime_error("Неизвестный тип контейнера");
+    }
 }
 
 Stack& Stack::operator=(const Stack& copyStack) {
