@@ -39,7 +39,8 @@ Stack::Stack(const Stack& copyStack): _containerType(copyStack._containerType) {
         }
 
         case StackContainer::Vector: {
-            _pimpl = static_cast<IStackImplementation *>(new VectorStack(*dynamic_cast<VectorStack*>(copyStack._pimpl)));
+            _pimpl = static_cast<IStackImplementation *>(new VectorStack(*dynamic_cast
+                    <VectorStack*>(copyStack._pimpl)));
             break;
         }
 
@@ -64,8 +65,15 @@ Stack::Stack(Stack&& moveStack) noexcept {
 }
 
 Stack& Stack::operator=(Stack&& moveStack) noexcept {
-    std::swap(this->_pimpl, moveStack._pimpl);
-    std::swap(this->_containerType, moveStack._containerType);
+    if (this == &moveStack) {
+        return *this;
+    }
+
+    std::swap(_pimpl, moveStack._pimpl);
+    std::swap(_containerType, moveStack._containerType);
+
+    delete moveStack._pimpl;
+    moveStack._pimpl = nullptr;
 
     return *this;
 }
