@@ -1,8 +1,9 @@
 #ifndef STACK_LAB_LISTSTACK_H
 #define STACK_LAB_LISTSTACK_H
 
-#include <list>
 #include "StackImplementation.h"
+
+#include <list>
 
 using ValueType = double;
 
