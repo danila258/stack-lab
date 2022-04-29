@@ -1,9 +1,9 @@
-#include <stdexcept>
-
 #include "Stack.h"
 #include "StackImplementation.h"
 #include "VectorStack.h"
 #include "ListStack.h"
+
+#include <stdexcept>
 
 
 Stack::Stack(StackContainer container) : _containerType(container) {

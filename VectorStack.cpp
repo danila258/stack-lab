@@ -1,4 +1,5 @@
 #include "VectorStack.h"
+
 #include <stdexcept>
 
 void VectorStack::push(const ValueType &value) {

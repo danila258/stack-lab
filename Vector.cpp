@@ -1,4 +1,5 @@
 #include "Vector.h"
+
 #include <cmath>
 
 Vector::Vector(const Value* rawArray, const size_t size, float coef):
